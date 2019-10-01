@@ -1,0 +1,63 @@
+This is a partial re-write of intmini by Grant Serle.
+The main objective was to move code from address 66H to allow
+the Z80 NMI to be used at that address.
+
+intmini contains the I/O routines for Grant's Z80 homebrew computer,
+which then uses Nascom basic starting at address 150H.
+This has all been reused in the RC2014 homebrew kit.
+This code has been configured to be used with RC2014 because I
+set RAM to start at address 8000H; the original was at 2000H, which could be
+altered by updating serBuf and TEMPSTACK.
+
+I have used Bas Wijnen's Z80 assembler to asseble it:
+http://savannah.nongnu.org/projects/z80asm/
+I hope to do some work on that soon too...
+To that end I have changed the original assembler to be compatible:
+Replaced pseudo ops with z80asm ones, added a colon after labels, and
+replaced/augmented ORGs with "DB label-$,0FFH" so as to add padding and
+that padding be the value of yet-to-be-programmed PROM.
+
+In order to enable the NMI functionality, the value of basicStarted at address
+8044H needs to be changed to 'y' from 'Y', then each NMI will push AF onto
+the stack and call RN which I have set as 0FFF0H. Place code there followed by
+a RET.
+
+Also RST 20 will jump to 0FFD0H (see label R20) and RST28 will jump to 
+0FFE0H (see label R28).
+RST 30 has a short routine to print a string up to a NUL 00H character then
+return; it is replacing PRINT in the original intmini.
+
+How to use:
+So far I have taken the original ROM image for the RC2014 (either from the
+internet or the ROM code R supplied with the kit).
+I assembled the new intmini and overwrote the first 150H (336) bytes while
+leaving the remaining basic as is.
+(On Unix / Linux / Mac OSX use "dd conv=notrunc")
+I then wrote to an EPROM and replaced the PROM in my RC2014 with it.
+The NMI link on the CPU board needs to be unsoldered and I replaced with
+2 header pins - these need to be jumpered together to keep NMI HIGH when not
+in use.
+
+As an initial test I connected a 555 timer at 5v to the NMI pin in place of the jumper, and loaded a small routine to increment a counter in memory.
+I'll add that to this repo shortly.
+
+Please let me know of your feedback - I imagine there I points I have skipped
+over quickly.
+
+Grant Searle's original file says:
+; Contents of this file are copyright Grant Searle
+;
+; You have permission to use this for NON COMMERCIAL USE ONLY
+; If you wish to use it elsewhere, please include an acknowledgement to myself.
+;
+; http://searle.hostei.com/grant/index.html
+;
+; eMail: home.micros01@btinternet.com
+;
+; If the above don't work, please perform an Internet search to see if I have
+; updated the web page hosting service.
+
+Until I have totally rewritten or spoken to him about these conditions,
+they will have to remain.
+
+John Critchley
