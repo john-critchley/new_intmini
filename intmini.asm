@@ -1,3 +1,12 @@
+;..................................................................................
+; Rewritten/reorganized by John Critchley
+; I have updated and rearranged the code so that NMI is now usable (calls location
+; 66H, which now saves AF and calls FFF0H, once the basic started flag is set
+; to a lower case "y".
+; Also code has been moved RST 20H, 28H and 30H; the first 2 have been given jump
+; intructions to locations in high memory, the third is now the rather useful
+; PRINT routine.
+; Here are the original comments from the original author:
 ;==================================================================================
 ; Contents of this file are copyright Grant Searle
 ;
@@ -16,6 +25,7 @@
 ; Minimum 6850 ACIA interrupt driven serial I/O to run modified NASCOM Basic 4.7
 ; Full input buffering with incoming data hardware handshaking
 ; Handshake shows full before the buffer is totally filled to allow run-on from the sender
+
 
 SER_BUFSIZE:      EQU     3FH
 SER_FULLSIZE:     EQU     30H
