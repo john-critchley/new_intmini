@@ -13,7 +13,7 @@
 ; You have permission to use this for NON COMMERCIAL USE ONLY
 ; If you wish to use it elsewhere, please include an acknowledgement to myself.
 ;
-; http://searle.hostei.com/grant/index.html
+; http://searle.x10host.com/
 ;
 ; eMail: home.micros01@btinternet.com
 ;
